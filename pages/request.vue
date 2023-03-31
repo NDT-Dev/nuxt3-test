@@ -1,15 +1,16 @@
 <template>
   <div class="flex flex-row justify-center text-center mx-auto">
-    <div class="w-full">
-      <n-select
+    <div class="lex-none w-20 h-14">
+      <NSelect
         v-model:value="selectedValue"
         filterable
-        placeholder="POST"
         :options="options"
+        :on-update:value="handleSelect"
       />
     </div>
-    <div>
+    <div class="flex-initial">
       <input
+        v-model.value="test"
         type="text"
         id="simple-search"
         class="flex flex-row h-7 w-200 border border-slate-300 hover:border-indigo-300"
@@ -17,14 +18,14 @@
         required
       />
     </div>
-    <div>
-      <button @click="send()">send</button>
+    <div class="flex-initial w-32">
+      <NButton type="info" @click="send()">send</NButton>
     </div>
   </div>
-  <div class="flex flex-row w-1/2">
-    <div>
-      <n-card>
-        <n-tabs
+  <div class="flex flex-row">
+    <div class="basis-1/2">
+      <NCard>
+        <NTabs
           class="card-tabs"
           default-value="signin"
           size="large"
@@ -32,8 +33,8 @@
           style="margin: 0 -4px"
           pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
         >
-          <n-tab-pane name="Headers" tab="Headers">
-            <n-table :single-line="false">
+          <NTabPane name="Headers" tab="Headers">
+            <NTable :single-line="false">
               <thead>
                 <tr>
                   <th></th>
@@ -44,81 +45,104 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><n-checkbox /></td>
+                  <td><NCheckbox /></td>
                   <td><input type="text" /></td>
                   <td><input type="text" /></td>
                   <td><input type="text" name="" id="" /></td>
                 </tr>
               </tbody>
-            </n-table>
-          </n-tab-pane>
-          <n-tab-pane name="Body" tab="Body">
-            <n-form> </n-form>
-          </n-tab-pane>
+            </NTable>
+          </NTabPane>
+          <NTabPane name="Body" tab="Body">
+            <NForm
+              ><div class="h-40 overscroll-contain">{{ data }}</div></NForm
+            >
+          </NTabPane>
 
-          <n-tab-pane name="hehe" tab="Pre-request Script">
-            <n-form>
-              <n-form-item-row label="Username">
-                <n-input />
-              </n-form-item-row>
-              <n-form-item-row label="Password">
-                <n-input />
-              </n-form-item-row>
-              <n-form-item-row label="Reenter Password">
-                <n-input />
-              </n-form-item-row>
-            </n-form>
-            <n-button type="primary" block secondary strong> Sign up </n-button>
-          </n-tab-pane>
-        </n-tabs>
-      </n-card>
+          <NTabPane name="hehe" tab="Pre-request Script">
+            <NForm>
+              <NFormItemRow label="Username">
+                <NInput />
+              </NFormItemRow>
+              <NFormItemRow label="Password">
+                <NInput />
+              </NFormItemRow>
+              <NFormItemRow label="Reenter Password">
+                <NInput />
+              </NFormItemRow>
+            </NForm>
+            <NButton type="primary" block secondary strong> Sign up </NButton>
+          </NTabPane>
+        </NTabs>
+      </NCard>
     </div>
-    <div class="flex flex-row w-1/2">
-      <n-form
-        ><h1 v-if="hihi"></h1>
-        <p v-else>
-          <hel /></p
-      ></n-form>
+    <div class="basis-1/2">
+      <NForm
+        ><div v-if="hihi"></div>
+        <p v-else></p>
+        <NTabs type="segment">
+          <NTabPane name="Pretty" tab="Pretty"></NTabPane>
+          <NTabPane name="Raw" tab="Raw">{{ data }}</NTabPane>
+          <NTabPane name="Preview" tab="Preview"> Qilixiang </NTabPane>
+        </NTabs>
+      </NForm>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script setup>
 import { defineComponent, ref } from "vue";
-import { NButton, useMessage, DataTableColumns } from "naive-ui";
+import { NButton, useMessage } from "naive-ui";
+import { method } from "lodash";
+import "highlight.js/styles/github.css";
 
-import Hel from "./hel.vue";
+const test = ref("");
+const data = ref(null);
+const selectedValue = ref(null);
 
-export default defineComponent({
-  setup() {
-    return {
-      selectedValue: ref(null),
-      selectedValues: ref(null),
-      options: [
-        {
-          label: "POST",
-          value: "POST",
-        },
-        {
-          label: "REQUEST",
-          value: "REQUEST",
-        },
-        {
-          label: "DELETE",
-          value: "DELETE",
-        },
-        {
-          label: "GET",
-          value: "GET",
-        },
-      ],
-    };
+const options = [
+  {
+    label: "POST",
+    value: "POST",
   },
-  components: { Hel },
-});
-
+  {
+    label: "PUT",
+    value: "PUT",
+  },
+  {
+    label: "DELETE",
+    value: "DELETE",
+  },
+  {
+    label: "GET",
+    value: "GET",
+  },
+];
 const hihi = ref(true);
-function send() {
-  hihi.value = !hihi.value;
-}
+const send = async () => {
+  if (selectedValue.value === "GET") {
+    const selectedValue = method;
+    const { data: datas, pending, error, refresh } = await useFetch(test.value);
+    data.value = datas.value;
+    console.log(data.value);
+  } else if (selectedValue.value === "POST") {
+    const { data, pending, error, refresh } = await useFetch(test.value);
+    console.log("123123");
+  } else if (selectedValue.value === "DELETE") {
+    const { data, pending, error, refresh } = await useFetch(test.value);
+    console.log("aaaaaaaa");
+  } else if (selectedValue.value === "PUT") {
+    const { data, pending, error, refresh } = await useFetch(test.value);
+    console.log("bbbbbbbbb");
+  }
+  {
+    method: options.value;
+  }
+  // data = data2;
+  // console.log("---------------------->", data2);
+};
+const handleSelect = (item) => {
+  selectedValue.value = item;
+  console.log(selectedValue.value);
+};
 </script>

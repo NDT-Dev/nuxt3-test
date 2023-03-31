@@ -6,7 +6,7 @@
       <slidebar />
     </div>
     <!-- màn hình bên phải -->
-    <div class="container">
+    <div class="flex flex-col h-full w-full">
       <div><dynamic /></div>
       <div class="flex flex-col w-full p-2">
         <request />
@@ -15,7 +15,6 @@
   </div>
 </template>
 <script setup>
-import { defineComponent } from "vue";
 import { ref } from "vue";
 import dynamic from "./dynamic.vue";
 import request from "./request.vue";

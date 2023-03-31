@@ -1,28 +1,30 @@
 <template>
-  <div class="h-full">
-    <n-dynamic-tags @create="handleCreate" />
-    <n-tabs type="line" animated>
-      <n-tab-pane name="oasis" tab="Oasis" class="h-full">
-        <request.vue />
-      </n-tab-pane>
-      <n-tab-pane name="the beatles" tab="the Beatles"> <request.vue /> </n-tab-pane>
-      <n-tab-pane name="jay chou" tab="Jay Chou"> Qilixiang </n-tab-pane>
-    </n-tabs>
-  </div>
+  <n-dynamic-tags v-model:value="tags" :render-tag="renderTag" />
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import request from "./request.vue";
+import { defineComponent, ref, h } from "vue";
+import { NTag } from "naive-ui";
 
 export default defineComponent({
   setup() {
+    const tagsRef = ref(["teacher", "programmer"]);
     return {
-      handleCreate: (label: string) => {
-        return (
+      tags: tagsRef,
+      renderTag: (tag: string, index: number) => {
+        return h(
+          NTag,
           {
-            0: "GET ",
-          }[Math.floor(Math.random() * 1)] + label
+            type: index < 3 ? "success" : "error",
+            disabled: index > 3,
+            closable: true,
+            onClose: () => {
+              tagsRef.value.splice(index, 1);
+            },
+          },
+          {
+            default: () => tag,
+          }
         );
       },
     };

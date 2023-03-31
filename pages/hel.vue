@@ -1,46 +1,33 @@
 <script setup>
-const { data } = await useAsyncData("count", () =>
-  $fetch("https://fakestoreapi.com/products")
-);
+import { ref } from "vue";
+const qweq = ref("");
+const handleGet = async () => {
+  const { data: test } = await useFetch("https://fakestoreapi.com/products", {});
+  qweq.value = test.value;
+  console.log(test.value);
+};
+
+const handlePost = async () => {
+  const { data, error, pending, refresh } = await useFetch(
+    "https://fakestoreapi.com/products",
+    {
+      method: "POST",
+      headers: {
+        Authorization: "",
+        "x-amz-acl": acl || "public-read",
+        "Content-Encoding": encoding,
+        "Content-Type": content_type,
+      },
+      body: {
+        title: "test product",
+        price: 13.5,
+        description: "lorem ipsum set",
+        image: "https://i.pravatar.cc",
+        category: "electronic",
+      },
+});
 </script>
 <template>
-  {{ data }}
-
-  <!-- <li v-for="item in data">
-    {{ item.id }}
-    {{ item.title }}
-    {{ item.price }}
-    {{ item.description }}
-    {{ item.category }}
-    {{ item.image }}
-    {{ item.rating }}
-  </li> -->
-  <!-- <div>
-    {{ data[0].id }}
-  </div>
-
-  <div>
-    {{ data[0].title }}
-  </div>
-</template>
-
-  <div>
-    {{ data[0].price }}
-  </div>
-
-  <div>
-    {{ data[0].description }}
-  </div>
-
-  <div>
-    {{ data[0].category }}
-  </div>
-
-  <div>
-    {{ data[0].image }}
-  </div>
-
-  <div>
-    {{ data[0].rating }}
-  </div> -->
+  <button @click="handleGet">aaa</button>
+  <div>{{ qweq }}</div>
 </template>
