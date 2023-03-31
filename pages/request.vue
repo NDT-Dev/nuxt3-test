@@ -54,9 +54,13 @@
             </NTable>
           </NTabPane>
           <NTabPane name="Body" tab="Body">
-            <NForm
-              ><div class="h-40 overscroll-contain">{{ data }}</div></NForm
-            >
+            <NForm>
+              <!-- quan he cha con  -->
+              <!-- <hel /> -->
+              <input type="text" v-model="inputBody" />
+              <div>{{ inputBody }}</div>
+              <!-- aaaaaaaaaaaaaaaa -->
+            </NForm>
           </NTabPane>
 
           <NTabPane name="hehe" tab="Pre-request Script">
@@ -94,12 +98,11 @@
 import { defineComponent, ref } from "vue";
 import { NButton, useMessage } from "naive-ui";
 import { method } from "lodash";
-import "highlight.js/styles/github.css";
 
-const test = ref("");
+const test = ref("https://64265537d24d7e0de46e03cc.mockapi.io/tan");
 const data = ref(null);
-const selectedValue = ref(null);
-
+const selectedValue = ref("POST");
+const inputBody = ref("");
 const options = [
   {
     label: "POST",
@@ -121,26 +124,44 @@ const options = [
 const hihi = ref(true);
 const send = async () => {
   if (selectedValue.value === "GET") {
-    const selectedValue = method;
-    const { data: datas, pending, error, refresh } = await useFetch(test.value);
+    selectedValue.value = method;
+    const { data: datas, pending, error, refresh } = await useFetch(test.value, method);
     data.value = datas.value;
     console.log(data.value);
   } else if (selectedValue.value === "POST") {
-    const { data, pending, error, refresh } = await useFetch(test.value);
-    console.log("123123");
+    const { data, error, pending, refresh } = await useFetch(test.value, {
+      method: "POST",
+      headers: {},
+      // {
+      //   Name: "duy tan",
+      //   Phone: 466,
+      //   Address: "Address10",
+      // }
+      body: JSON.parse(inputBody.value.trim()),
+    });
+    console.log("🚀 ~ file: detail.vue:373 ~ handlePost ~ data:", data.value);
+    // console.log(typeof JSON.parse(inputBody.value), "sduffuweufuwefgug");
   } else if (selectedValue.value === "DELETE") {
-    const { data, pending, error, refresh } = await useFetch(test.value);
-    console.log("aaaaaaaa");
+    const { data, pending, error, refresh } = await useFetch(test.value, {
+      method: "DELETE",
+      body: {},
+    });
+    console.log(data.value);
   } else if (selectedValue.value === "PUT") {
-    const { data, pending, error, refresh } = await useFetch(test.value);
-    console.log("bbbbbbbbb");
+    const { data, pending, error, refresh } = await useFetch(test.value, {
+      method: "PUT",
+      body: {
+        title: "test product",
+        price: 13.5,
+        description: "lorem ipsum set",
+        image: "https://i.pravatar.cc",
+        category: "electronic",
+      },
+    });
+    console.log(data.value);
   }
-  {
-    method: options.value;
-  }
-  // data = data2;
-  // console.log("---------------------->", data2);
 };
+
 const handleSelect = (item) => {
   selectedValue.value = item;
   console.log(selectedValue.value);
