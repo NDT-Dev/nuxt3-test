@@ -85,7 +85,9 @@
         ><div v-if="hihi"></div>
         <p v-else></p>
         <NTabs type="segment">
-          <NTabPane name="Pretty" tab="Pretty"></NTabPane>
+          <NTabPane name="Pretty" tab="Pretty">
+            <pre>{{ JSON.stringify(data, null, 2) }}</pre>
+          </NTabPane>
           <NTabPane name="Raw" tab="Raw">{{ data }}</NTabPane>
           <NTabPane name="Preview" tab="Preview"> Qilixiang </NTabPane>
         </NTabs>
